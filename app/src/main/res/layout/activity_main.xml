@@ -255,7 +255,7 @@
                 <ImageButton
                     android:id="@+id/buttonSpeak"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight=".34"
                     android:src="@drawable/ic_keyboard_voice_black_24dp"
                     android:adjustViewBounds="false"
