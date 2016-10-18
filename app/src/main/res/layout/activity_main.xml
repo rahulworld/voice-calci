@@ -241,7 +241,7 @@
                     android:id="@+id/button0"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".66"
+                    android:layout_weight=".33"
                     android:text="@string/button0"
                     android:textSize="25sp" />
 
@@ -252,6 +252,13 @@
                     android:layout_weight=".34"
                     android:text="@string/buttonDecimalPoint"
                     android:textSize="25sp" />
+                <ImageButton
+                    android:id="@+id/buttonSpeak"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".34"
+                    android:src="@drawable/ic_keyboard_voice_black_24dp"
+                    android:scaleType="fitCenter" />
             </LinearLayout>
         </LinearLayout>
 
