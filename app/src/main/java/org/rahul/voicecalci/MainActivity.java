@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity{
                     String change=result.get(0);
                     change=change.replace("x","*");
                     change=change.replace("X","*");
+                    change=change.replace("add","+");
                     change=change.replace(" plus ","+");
                     change=change.replace(" minus ","-");
                     change=change.replace(" times ","*");
