@@ -8,136 +8,140 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+
 import java.text.DecimalFormat;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private TextView mCalculatorDisplay;
-    private Boolean userIsInTheMiddleOfTypingANumber = false;
-    private Calculation mCalculation;
-    private static final String DIGITS = "0123456789.";
-
-    DecimalFormat df = new DecimalFormat("@###########");
+public class MainActivity extends AppCompatActivity {
+    // IDs of all the numeric buttons
+    private int[] numericButtons = {R.id.btnZero, R.id.btnOne, R.id.btnTwo, R.id.btnThree, R.id.btnFour, R.id.btnFive, R.id.btnSix, R.id.btnSeven, R.id.btnEight, R.id.btnNine};
+    // IDs of all the operator buttons
+    private int[] operatorButtons = {R.id.btnAdd, R.id.btnSubtract, R.id.btnMultiply, R.id.btnDivide};
+    // TextView used to display the output
+    private TextView txtScreen;
+    // Represent whether the lastly pressed key is numeric or not
+    private boolean lastNumeric;
+    // Represent that current state is in error or not
+    private boolean stateError;
+    // If true, do not allow to add another DOT
+    private boolean lastDot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // hide the window title.
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // hide the status bar and other OS-level chrome
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        mCalculation = new Calculation();
-        mCalculatorDisplay = (TextView) findViewById(R.id.textView1);
-
-        df.setMinimumFractionDigits(0);
-        df.setMinimumIntegerDigits(1);
-        df.setMaximumIntegerDigits(8);
-
-        findViewById(R.id.button0).setOnClickListener(this);
-        findViewById(R.id.button1).setOnClickListener(this);
-        findViewById(R.id.button2).setOnClickListener(this);
-        findViewById(R.id.button3).setOnClickListener(this);
-        findViewById(R.id.button4).setOnClickListener(this);
-        findViewById(R.id.button5).setOnClickListener(this);
-        findViewById(R.id.button6).setOnClickListener(this);
-        findViewById(R.id.button7).setOnClickListener(this);
-        findViewById(R.id.button8).setOnClickListener(this);
-        findViewById(R.id.button9).setOnClickListener(this);
-
-        findViewById(R.id.buttonAdd).setOnClickListener(this);
-        findViewById(R.id.buttonSubtract).setOnClickListener(this);
-        findViewById(R.id.buttonMultiply).setOnClickListener(this);
-        findViewById(R.id.buttonDivide).setOnClickListener(this);
-        findViewById(R.id.buttonToggleSign).setOnClickListener(this);
-        findViewById(R.id.buttonDecimalPoint).setOnClickListener(this);
-        findViewById(R.id.buttonEquals).setOnClickListener(this);
-        findViewById(R.id.buttonClear).setOnClickListener(this);
-        findViewById(R.id.buttonClearMemory).setOnClickListener(this);
-        findViewById(R.id.buttonAddToMemory).setOnClickListener(this);
-        findViewById(R.id.buttonSubtractFromMemory).setOnClickListener(this);
-        findViewById(R.id.buttonRecallMemory).setOnClickListener(this);
-
-        // The following buttons only exist in layout-land (Landscape mode) and require extra attention.
-        // The messier option is to place the buttons in the regular layout too and set android:visibility="invisible".
-        if (findViewById(R.id.buttonSquareRoot) != null) {
-            findViewById(R.id.buttonSquareRoot).setOnClickListener(this);
-        }
-        if (findViewById(R.id.buttonSquared) != null) {
-            findViewById(R.id.buttonSquared).setOnClickListener(this);
-        }
-        if (findViewById(R.id.buttonInvert) != null) {
-            findViewById(R.id.buttonInvert).setOnClickListener(this);
-        }
-        if (findViewById(R.id.buttonSine) != null) {
-            findViewById(R.id.buttonSine).setOnClickListener(this);
-        }
-        if (findViewById(R.id.buttonCosine) != null) {
-            findViewById(R.id.buttonCosine).setOnClickListener(this);
-        }
-        if (findViewById(R.id.buttonTangent) != null) {
-            findViewById(R.id.buttonTangent).setOnClickListener(this);
-        }
+        // Find the TextView
+        this.txtScreen = (TextView) findViewById(R.id.txtScreen);
+        // Find and set OnClickListener to numeric buttons
+        setNumericOnClickListener();
+        // Find and set OnClickListener to operator buttons, equal button and decimal point button
+        setOperatorOnClickListener();
     }
 
-    @Override
-    public void onClick(View v) {
-        String buttonPressed = ((Button) v).getText().toString();
-
-        if (DIGITS.contains(buttonPressed)) {
-
-            // digit was pressed
-            if (userIsInTheMiddleOfTypingANumber) {
-
-                if (buttonPressed.equals(".") && mCalculatorDisplay.getText().toString().contains(".")) {
-                    // ERROR PREVENTION
-                    // Eliminate entering multiple decimals
+    /**
+     * Find and set OnClickListener to numeric buttons.
+     */
+    private void setNumericOnClickListener() {
+        // Create a common OnClickListener
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Just append/set the text of clicked button
+                Button button = (Button) v;
+                if (stateError) {
+                    // If current state is Error, replace the error message
+                    txtScreen.setText(button.getText());
+                    stateError = false;
                 } else {
-                    mCalculatorDisplay.append(buttonPressed);
+                    // If not, already there is a valid expression so append to it
+                    txtScreen.append(button.getText());
                 }
-
-            } else {
-
-                if (buttonPressed.equals(".")) {
-                    // ERROR PREVENTION
-                    // This will avoid error if only the decimal is hit before an operator, by placing a leading zero
-                    // before the decimal
-                    mCalculatorDisplay.setText(0 + buttonPressed);
-                } else {
-                    mCalculatorDisplay.setText(buttonPressed);
-                }
-
-                userIsInTheMiddleOfTypingANumber = true;
+                // Set the flag
+                lastNumeric = true;
             }
-
-        } else {
-            // operation was pressed
-            if (userIsInTheMiddleOfTypingANumber) {
-
-                mCalculation.setOperand(Double.parseDouble(mCalculatorDisplay.getText().toString()));
-                userIsInTheMiddleOfTypingANumber = false;
-            }
-
-            mCalculation.performOperation(buttonPressed);
-            mCalculatorDisplay.setText(df.format(mCalculation.getResult()));
-
+        };
+        // Assign the listener to all the numeric buttons
+        for (int id : numericButtons) {
+            findViewById(id).setOnClickListener(listener);
         }
-
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Save variables on screen orientation change
-        outState.putDouble("OPERAND", mCalculation.getResult());
-        outState.putDouble("MEMORY", mCalculation.getMemory());
+    /**
+     * Find and set OnClickListener to operator buttons, equal button and decimal point button.
+     */
+    private void setOperatorOnClickListener() {
+        // Create a common OnClickListener for operators
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // If the current state is Error do not append the operator
+                // If the last input is number only, append the operator
+                if (lastNumeric && !stateError) {
+                    Button button = (Button) v;
+                    txtScreen.append(button.getText());
+                    lastNumeric = false;
+                    lastDot = false;    // Reset the DOT flag
+                }
+            }
+        };
+        // Assign the listener to all the operator buttons
+        for (int id : operatorButtons) {
+            findViewById(id).setOnClickListener(listener);
+        }
+        // Decimal point
+        findViewById(R.id.btnDot).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lastNumeric && !stateError && !lastDot) {
+                    txtScreen.append(".");
+                    lastNumeric = false;
+                    lastDot = true;
+                }
+            }
+        });
+        // Clear button
+        findViewById(R.id.btnClear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtScreen.setText("");  // Clear the screen
+                // Reset all the states and flags
+                lastNumeric = false;
+                stateError = false;
+                lastDot = false;
+            }
+        });
+        // Equal button
+        findViewById(R.id.btnEqual).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEqual();
+            }
+        });
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Restore variables on screen orientation change
-        mCalculation.setOperand(savedInstanceState.getDouble("OPERAND"));
-        mCalculation.setMemory(savedInstanceState.getDouble("MEMORY"));
-        mCalculatorDisplay.setText(df.format(mCalculation.getResult()));
+    /**
+     * Logic to calculate the solution.
+     */
+    private void onEqual() {
+        // If the current state is error, nothing to do.
+        // If the last input is a number only, solution can be found.
+        if (lastNumeric && !stateError) {
+            // Read the expression
+            String txt = txtScreen.getText().toString();
+            // Create an Expression (A class from exp4j library)
+            Expression expression = new ExpressionBuilder(txt).build();
+            try {
+                // Calculate the result and display
+                double result = expression.evaluate();
+                txtScreen.setText(Double.toString(result));
+                lastDot = true; // Result contains a dot
+            } catch (ArithmeticException ex) {
+                // Display an error message
+                txtScreen.setText("Error");
+                stateError = true;
+                lastNumeric = false;
+            }
+        }
     }
 }
