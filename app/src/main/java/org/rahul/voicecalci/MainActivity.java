@@ -209,14 +209,25 @@ public class MainActivity extends AppCompatActivity{
                     change=change.replace("x","*");
                     change=change.replace("X","*");
                     change=change.replace("add","+");
+                    change=change.replace("sub","-");
+                    change=change.replace("to","2");
                     change=change.replace(" plus ","+");
                     change=change.replace(" minus ","-");
                     change=change.replace(" times ","*");
                     change=change.replace(" into ","*");
+                    change=change.replace(" in2 ","*");
                     change=change.replace(" multiply by ","*");
                     change=change.replace(" divide by ","/");
                     change=change.replace("divide","/");
-                    txtScreen.setText(change);
+                    change=change.replace("equal","=");
+                    change=change.replace("equals","=");
+                    if(change.contains("=")){
+                        change=change.replace("=","");
+                        txtScreen.setText(change);
+                        onEqual();
+                    }else{
+                        txtScreen.setText(change);
+                    }
                 }
                 break;
             }
