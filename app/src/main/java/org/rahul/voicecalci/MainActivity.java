@@ -18,6 +18,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static android.R.attr.button;
+
 public class MainActivity extends AppCompatActivity{
     // IDs of all the numeric buttons
     private int[] numericButtons = {R.id.btnZero, R.id.btnOne, R.id.btnTwo, R.id.btnThree, R.id.btnFour, R.id.btnFive, R.id.btnSix, R.id.btnSeven, R.id.btnEight, R.id.btnNine};
@@ -129,7 +131,17 @@ public class MainActivity extends AppCompatActivity{
         findViewById(R.id.btnspeak).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                promptSpeechInput();
+                if (stateError) {
+                    // If current state is Error, replace the error message
+                    txtScreen.setText("Try Again");
+                    stateError = false;
+                } else {
+                    // If not, already there is a valid expression so append to it
+                    promptSpeechInput();
+                }
+                // Set the flag
+                lastNumeric = true;
+
             }
         });
     }
@@ -144,11 +156,15 @@ public class MainActivity extends AppCompatActivity{
             // Read the expression
             String txt = txtScreen.getText().toString();
             // Create an Expression (A class from exp4j library)
-            Expression expression = new ExpressionBuilder(txt).build();
             try {
-                // Calculate the result and display
-                double result = expression.evaluate();
-                txtScreen.setText(Double.toString(result));
+                Expression expression=null;
+                try{
+                    expression = new ExpressionBuilder(txt).build();
+                    double result = expression.evaluate();
+                    txtScreen.setText(Double.toString(result));
+                }catch (Exception e){
+                    txtScreen.setText("Error");
+                }
                 lastDot = true; // Result contains a dot
             } catch (ArithmeticException ex) {
                 // Display an error message
@@ -189,7 +205,17 @@ public class MainActivity extends AppCompatActivity{
 
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    txtScreen.setText(result.get(0));
+                    String change=result.get(0);
+                    change=change.replace("x","*");
+                    change=change.replace("X","*");
+                    change=change.replace(" plus ","+");
+                    change=change.replace(" minus ","-");
+                    change=change.replace(" times ","*");
+                    change=change.replace(" into ","*");
+                    change=change.replace(" multiply by ","*");
+                    change=change.replace(" divide by ","/");
+                    change=change.replace("divide","/");
+                    txtScreen.setText(change);
                 }
                 break;
             }
