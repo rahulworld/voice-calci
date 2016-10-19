@@ -6,12 +6,12 @@ Have any calculation do in few second without press any numeric and operator but
 Here is an easy to use android app to calculate numbers using multi operator and numbers!
 -all numeric number using (zero, one, two, three, four, five, six, seven, eight, nine, ten)
 -all operator
-		addition-plus,add
-		subtraction- minus, subtract
-		multiplication-multiply, multiply by, into, times
-		divide- divide, divide by
+		+addition-plus,add
+		+subtraction- minus, subtract
+		+multiplication-multiply, multiply by, into, times
+		+divide- divide, divide by
 -equal operator
-		speaking equal at last and using press eaual button.
+		+speaking equal at last and using press eaual button.
 
 
 
