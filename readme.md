@@ -1,28 +1,40 @@
-# voice_calci
-An android application which take input from voice speech.
+# Voice Calculator
 
-###Using
-## for addition- add , plus
-## for subtraction- subtract, minus
-## for mutiply- multiply, multiply by, into
-## for divide- divide, divide by
-## for equal- equal, equals
+[<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80">]()
+
+Have any calculation do in few second without press any numeric and operator button using google speech in a few seconds! :smiley:
+Here is an easy to use android app to calculate numbers using multi operator and numbers!
+-all numeric number using (zero, one, two, three, four, five, six, seven, eight, nine, ten)
+-all operator
+		addition-plus,add
+		subtraction- minus, subtract
+		multiplication-multiply, multiply by, into, times
+		divide- divide, divide by
+-equal operator
+		speaking equal at last and using press eaual button.
 
 
 
-License
--------
+[Sample Apk]()
 
-Copyright 2016 @rahulworld.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+
+Hurray! speak operation and get calcutor without pressing equal button.
+
+
+### Contributing
+
+#### Dependencies
++ [exp4j](http://www.objecthunter.net/exp4j)
++ [Material Design]()
+
+#### Code & Issues
+If you are a developer and you wish to contribute to the app please fork the project
+and submit a pull request.
+If you have any questions, feel free to ask [me](mailto:rahulnitsxr@gmail.com) about whatever you want.
+[Here](https://github.com/rahulworld/voice_calci/issues) is the list of known issues.
+
+### Project Maintainers
+This project is founded and actively maintained by [Rahul Chauahan](https://github.com/rahulworld/). For any sort of queries feel free to mail at rahulnitsxr@gmail.com.
