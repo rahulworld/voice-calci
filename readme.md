@@ -22,6 +22,8 @@ Here is an easy to use android app to calculate numbers using multi operator and
 ####Voice Calculator
 
 ##### User can use speech as input in calculator.
+<img src="/screenshots/Screenshot_2016-10-27-21-12-01.png" width="400px">
+<img src="/screenshots/Screenshot_2016-10-27-21-12-32.png" width="400px">
 
 
 Hurray! speak operation and get calcutor without pressing equal button.
