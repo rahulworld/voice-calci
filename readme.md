@@ -2,7 +2,7 @@
 
 [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80">]()
 
-Have any calculation do in few second without press any numeric and operator button using google speech in a few seconds! :smiley:
+Have any calculation to do in few second without pressing any numeric button using google speech in a few seconds! :smiley:
 Here is an easy to use android app to calculate numbers using multi operator and numbers!
 -all numeric number using (zero, one, two, three, four, five, six, seven, eight, nine, ten)
 -all operator
